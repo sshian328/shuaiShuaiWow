@@ -2,6 +2,8 @@ import base64
 import requests
 import os
 import configSetting as cfg
+from PIL import Image
+import time
 
 url = "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image"
 
@@ -61,5 +63,18 @@ if not os.path.exists("./out"):
     os.makedirs("./out")
 
 for i, image in enumerate(data["artifacts"]):
-    with open(f'./out/txt2img_{image["seed"]}.png', "wb") as f:
-        f.write(base64.b64decode(image["base64"]))
+    image_data = base64.b64decode(image["base64"])
+    
+    # Get the current timestamp as a string
+    current_time = time.strftime("%Y%m%d%H%M%S")
+    
+    # Save the image with timestamp in the filename
+    img_path = f'./out/txt2img_{image["seed"]}_{current_time}.png'
+    with open(img_path, "wb") as f:
+        f.write(image_data)
+    
+    # Open the image using PIL
+    img = Image.open(img_path)
+    
+    # Display the image (opens the default image viewer)
+    img.show()    
