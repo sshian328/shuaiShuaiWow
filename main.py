@@ -31,7 +31,7 @@ body = {
 api_key = ''
 with open('apikey.txt', 'r') as file:
     # Read the content of the file into a variable
-    api_key = file.read()
+    api_key = file.read().strip()
 
 headers = {
   "Accept": "application/json",
